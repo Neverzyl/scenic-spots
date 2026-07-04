@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>浙江5A景区 · 移动商城直达</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:#f3f6fc;color:#1a1a2e;padding:32px 16px;-webkit-font-smoothing:antialiased}
+.container{max-width:960px;margin:0 auto}
+
+/* Header */
+.header{margin-bottom:24px}
+.header h1{font-size:25px;font-weight:700;color:#0f172a;letter-spacing:-0.3px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.header h1 span{background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;font-size:13px;padding:2px 10px;border-radius:6px;font-weight:600}
+.header .sub{font-size:14px;color:#64748b;margin-top:6px;line-height:1.6}
+
+/* Stats */
+.stats{display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap}
+.stat-card{background:#fff;border-radius:10px;padding:14px 20px;box-shadow:0 1px 3px rgba(0,0,0,0.04);flex:1;min-width:120px;border:1px solid #f0f0f0}
+.stat-card .num{font-size:24px;font-weight:700;background:linear-gradient(135deg,#2563eb,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.2}
+.stat-card .label{font-size:12px;color:#94a3b8;margin-top:2px}
+
+/* Card */
+.card{background:#fff;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,0.04);margin-bottom:10px;overflow:hidden;border:1px solid #f0f0f0;transition:box-shadow .2s}
+.card:hover{box-shadow:0 4px 16px rgba(0,0,0,0.07)}
+.card-header{padding:14px 18px 10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px}
+.card-header .name{font-size:15px;font-weight:600;color:#0f172a}
+.card-header .city{font-size:11px;color:#94a3b8;background:#f1f5f9;padding:2px 10px;border-radius:10px;font-weight:500}
+.card-body{padding:0 18px 14px}
+
+/* Platform row */
+.platform{display:flex;align-items:flex-start;gap:10px;padding:8px 0}
+.platform+.platform{border-top:1px solid #f1f5f9;margin-top:6px;padding-top:10px}
+.badge{flex-shrink:0;font-size:10px;padding:3px 9px;border-radius:5px;font-weight:600;margin-top:3px;letter-spacing:0.2px;line-height:1.3}
+.badge-wx{background:#dcfce7;color:#166534}
+.badge-alipay{background:#dbeafe;color:#1e40af}
+.badge-web{background:#fef3c7;color:#92400e}
+.badge-ota{background:#f3e8ff;color:#6b21a8}
+
+.info{font-size:14px;line-height:1.5;flex:1;min-width:0}
+.info .name-label{font-weight:600;color:#0f172a;font-size:13px}
+.info .desc{font-size:12px;color:#94a3b8;margin-top:1px;line-height:1.5}
+.tag{display:inline-block;font-size:10px;padding:1px 6px;border-radius:3px;background:#f1f5f9;color:#94a3b8;margin-left:6px;font-weight:400;vertical-align:middle}
+.tag-ok{background:#dcfce7;color:#166534}
+
+.actions{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.btn{display:inline-flex;align-items:center;gap:4px;font-size:12px;padding:7px 14px;border-radius:7px;border:1px solid transparent;cursor:pointer;font-weight:600;transition:all .15s;white-space:nowrap;line-height:1;user-select:none;text-decoration:none}
+.btn:active{transform:scale(0.96)}
+.btn-primary{background:#166534;color:#fff;border-color:#166534}
+.btn-primary:hover{background:#14532d}
+.btn-primary:active{background:#0f4224}
+.btn-secondary{background:#f0fdf4;color:#166534;border-color:#bbf7d0}
+.btn-secondary:hover{background:#dcfce7}
+.btn-secondary:active{background:#bbf7d0}
+.btn-ali{background:#dbeafe;color:#1e40af;border-color:#bfdbfe}
+.btn-ali:hover{background:#bfdbfe}
+.btn-web{background:#fef3c7;color:#92400e;border-color:#fde68a}
+.btn-web:hover{background:#fde68a}
+.btn-ota{background:#f3e8ff;color:#6b21a8;border-color:#e9d5ff}
+.btn-ota:hover{background:#e9d5ff}
+.btn-ghost{background:#f8fafc;color:#64748b;border-color:#e2e8f0}
+.btn-ghost:hover{background:#f1f5f9;color:#475569}
+.btn-ghost-copied{background:#dcfce7;color:#166534;border-color:#bbf7d0}
+
+/* Toast */
+.toast{position:fixed;bottom:36px;left:50%;transform:translateX(-50%) translateY(20px);background:#0f172a;color:#fff;padding:10px 22px;border-radius:10px;font-size:13px;z-index:2000;opacity:0;transition:all .35s cubic-bezier(0.22,1,0.36,1);pointer-events:none;box-shadow:0 8px 30px rgba(0,0,0,0.2)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* Modal */
+.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,0.5);z-index:1000;justify-content:center;align-items:center;backdrop-filter:blur(3px)}
+.modal-overlay.show{display:flex}
+.modal{background:#fff;border-radius:16px;padding:28px;max-width:380px;width:92%;text-align:center;box-shadow:0 25px 60px rgba(0,0,0,0.25);animation:modalIn .3s ease}
+@keyframes modalIn{from{opacity:0;transform:scale(0.92) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal .icon{font-size:36px;margin-bottom:8px;line-height:1}
+.modal h3{font-size:17px;font-weight:700;color:#0f172a;margin-bottom:6px}
+.modal .modal-desc{font-size:13px;color:#64748b;margin-bottom:16px;line-height:1.6}
+.modal .copy-box{display:flex;align-items:center;gap:8px;background:#f8fafc;padding:8px 12px;border-radius:8px;margin-bottom:14px;text-align:left;border:1px solid #e2e8f0}
+.modal .copy-box .kw{font-size:15px;font-weight:700;color:#2563eb;flex:1;word-break:break-all;line-height:1.4}
+.modal .copy-box .cpy-btn{cursor:pointer;font-size:11px;padding:5px 12px;border-radius:5px;border:1px solid #e2e8f0;background:#fff;color:#475569;font-weight:500;transition:all .15s;flex-shrink:0}
+.modal .copy-box .cpy-btn:hover{background:#f1f5f9;border-color:#cbd5e1}
+.modal .copy-box .cpy-btn.done{background:#dcfce7;color:#166534;border-color:#bbf7d0}
+.modal .steps{text-align:left;font-size:12px;color:#475569;line-height:2;margin-bottom:16px;background:#f8fafc;padding:12px 16px;border-radius:8px;border:1px solid #f1f5f9}
+.modal .steps .step{display:flex;align-items:baseline;gap:6px}
+.modal .steps .num{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:#e2e8f0;color:#64748b;font-size:10px;font-weight:700;flex-shrink:0}
+.modal .steps .num.active{background:#2563eb;color:#fff}
+.modal .btn-dismiss{background:#0f172a;color:#fff;border:none;padding:9px 28px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;transition:opacity .2s}
+.modal .btn-dismiss:hover{opacity:0.85}
+
+/* Edit mode */
+.edit-toggle{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:#94a3b8;cursor:pointer;padding:4px 10px;border-radius:6px;border:1px solid #e2e8f0;background:#fff;transition:all .15s}
+.edit-toggle:hover{color:#2563eb;border-color:#93c5fd}
+.edit-mode .edit-toggle{color:#2563eb;border-color:#2563eb;background:#eff6ff}
+.link-field{display:none;margin-top:6px;padding:8px 10px;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0;font-size:12px;align-items:center;gap:8px;flex-wrap:wrap}
+.edit-mode .link-field{display:flex}
+.link-field input{flex:1;min-width:140px;border:1px solid #cbd5e1;border-radius:5px;padding:5px 8px;font-size:12px;font-family:monospace;outline:none;transition:border-color .2s;background:#fff}
+.link-field input:focus{border-color:#2563eb;box-shadow:0 0 0 2px rgba(37,99,235,0.1)}
+.link-field .save-btn{padding:5px 14px;border-radius:5px;border:none;background:#2563eb;color:#fff;font-size:11px;cursor:pointer;font-weight:600;transition:background .15s}
+.link-field .save-btn:hover{background:#1d4ed8}
+.link-field .hint{color:#94a3b8;font-size:11px}
+.link-field .clear-btn{padding:4px 8px;border-radius:4px;border:1px solid #e2e8f0;background:#fff;color:#94a3b8;font-size:10px;cursor:pointer}
+.link-field .clear-btn:hover{background:#fee2e2;border-color:#fca5a5;color:#dc2626}
+
+.footer{text-align:center;font-size:11px;color:#cbd5e1;margin-top:32px;line-height:1.8}
+
+@media(max-width:600px){
+  body{padding:16px 10px}
+  .card-header{flex-direction:column;align-items:flex-start;gap:3px}
+  .modal{padding:24px 18px}
+  .link-field{flex-direction:column;align-items:stretch}
+  .link-field input{width:100%}
+  .stats .stat-card{min-width:100px}
+  .stat-card{padding:12px 14px}
+  .stat-card .num{font-size:20px}
+}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="icon" id="modalIcon">📱</div>
+    <h3 id="modalTitle">打开微信小程序</h3>
+    <p class="modal-desc" id="modalDesc">已复制名称并尝试唤起微信。按以下步骤操作：</p>
+    <div class="copy-box">
+      <span class="kw" id="modalKeyword">—</span>
+      <button class="cpy-btn" id="copyBtn" onclick="copyKeyword()">📋 复制</button>
+    </div>
+    <div class="steps" id="modalSteps">
+      <div class="step"><span class="num active">1</span> 微信已唤起，找到「文件传输助手」</div>
+      <div class="step"><span class="num active">2</span> 在输入框中粘贴（⌘V）已复制的链接</div>
+      <div class="step"><span class="num active">3</span> 发送后点击链接即可打开小程序</div>
+    </div>
+    <div style="font-size:11px;color:#94a3b8;margin-bottom:14px;line-height:1.6;text-align:left;background:#f0fdf4;padding:8px 12px;border-radius:6px" id="modalExtra">
+      💡 也可以在微信左侧「小程序」图标中搜索名称打开
+    </div>
+    <button class="btn-dismiss" onclick="closeModal()">知道了</button>
+  </div>
+</div>
+
+<div class="container">
+<div id="wxBanner" style="display:none;background:linear-gradient(135deg,#166534,#15803d);color:#fff;padding:12px 18px;border-radius:10px;margin-bottom:20px;font-size:14px;font-weight:500;text-align:center;box-shadow:0 2px 8px rgba(22,101,52,0.2)">
+  ✅ 检测到微信内置浏览器，点击按钮可直接打开小程序
+</div>
+
+
+<div class="header">
+  <h1>浙江5A景区 <span>直达</span></h1>
+  <div style="display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap">
+    <span class="edit-toggle" id="editToggle" onclick="toggleEdit()">✎ 编辑直达链接</span>
+    <span style="font-size:11px;color:#94a3b8">填 #小程序:// 链接可复制到微信打开，填 http 链接可直接跳转</span>
+  </div>
+  <div class="sub">
+    点击按钮自动复制名称并唤起微信电脑版，到微信小程序面板粘贴搜索即可打开。
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat-card"><div class="num" id="totalCount">22</div><div class="label">全部5A景区</div></div>
+  <div class="stat-card"><div class="num" id="wxCount">-</div><div class="label">有微信小程序</div></div>
+  <div class="stat-card"><div class="num" id="directCount">-</div><div class="label">已配置链接</div></div>
+</div>
+
+<div id="cardList"></div>
+
+
+
+<div class="footer">
+  2026年7月 · 数据基于公开信息整理 · 链接存储在浏览器本地
+</div>
+</div>
+
+<script>
+// ==== Local Storage ====
+const STORAGE_KEY = 'zj5a_links_v2';
+function loadMap(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{}}catch(e){return {}}}
+function saveMap(m){localStorage.setItem(STORAGE_KEY,JSON.stringify(m))}
+
+// ==== Data ====
+const SPOTS = [
+  {n:"杭州西湖风景名胜区",c:"杭州",p:[
+    {t:"wx",l:"西湖旅游",d:"AI导览、西湖好礼选购、门票预约、福利补贴"},
+    {t:"web",l:"公众号「杭州西湖西溪景区」",d:"关注后菜单栏预约购票"}
+  ]},
+  {n:"杭州市西溪湿地旅游区",c:"杭州",p:[
+    {t:"wx",l:"游西溪",d:"智慧导览、AI助手、门票预约"}
+  ]},
+  {n:"杭州市千岛湖风景名胜区",c:"杭州",p:[
+    {t:"wx",l:"千岛湖官方商城",d:"景区门票、游船票、酒店预订、特产商城"}
+  ]},
+  {n:"舟山市普陀山风景名胜区",c:"舟山",p:[
+    {t:"wx",l:"普陀山一码通",d:"票务预订、船票、行李管家"},
+    {t:"alipay",l:"普陀山一码通",d:"支付宝小程序"}
+  ]},
+  {n:"温州市雁荡山风景名胜区",c:"温州",p:[
+    {t:"alipay",l:"雁荡山风景区",d:"支付宝小程序，官方商城、数字文创"},
+    {t:"web",l:"公众号「雁荡山」",d:"菜单栏旅游商城→门票预订"}
+  ]},
+  {n:"嘉兴市桐乡乌镇古镇旅游区",c:"嘉兴",p:[
+    {t:"wx",l:"乌镇旅游服务",d:"门票、酒店、导览、停车指引"},
+    {t:"web",l:"乌镇旅游官网",d:"www.wuzhen.com.cn",u:"https://www.wuzhen.com.cn"}
+  ]},
+  {n:"嘉兴市西塘古镇旅游景区",c:"嘉兴",p:[
+    {t:"wx",l:"西塘旅游",d:"公众号内购票（关注→遇见西塘→门票预订）"}
+  ]},
+  {n:"宁波市奉化溪口-滕头旅游景区",c:"宁波",p:[
+    {t:"web",l:"公众号「溪口旅游」",d:"菜单栏在线预订购票"},
+    {t:"ota",l:"OTA购票",d:"美团、携程等平台均可购票"}
+  ]},
+  {n:"金华市东阳横店影视城景区",c:"金华",p:[
+    {t:"wx",l:"横店影视城",d:"门票预订、景区预约"},
+    {t:"web",l:"掌上横店",d:"m.hengdianworld.com",u:"https://m.hengdianworld.com"}
+  ]},
+  {n:"嘉兴市南湖旅游区",c:"嘉兴",p:[
+    {t:"web",l:"公众号「嘉兴南湖景区」",d:"景区免费，关注后菜单栏预约"}
+  ]},
+  {n:"绍兴市鲁迅故里沈园景区",c:"绍兴",p:[
+    {t:"wx",l:"迅哥旅行",d:"免费预约入园"},
+    {t:"alipay",l:"鲁迅故里",d:"支付宝小程序预约参观"}
+  ]},
+  {n:"台州市天台山景区",c:"台州",p:[
+    {t:"wx",l:"天台山景区",d:"关注公众号→菜单栏门票预订→进入购票小程序"}
+  ]},
+  {n:"台州市神仙居景区",c:"台州",p:[
+    {t:"wx",l:"神仙居旅游",d:"门票预订、免费游活动"}
+  ]},
+  {n:"湖州市南浔古镇景区",c:"湖州",p:[
+    {t:"wx",l:"南浔古镇",d:"AI伴游、门票预订、智能导览"}
+  ]},
+  {n:"衢州市江郎山·廿八都旅游区",c:"衢州",p:[
+    {t:"alipay",l:"衢州免费游",d:"江郎山、廿八都等景区统一预约入口"}
+  ]},
+  {n:"宁波市天一阁·月湖景区",c:"宁波",p:[
+    {t:"web",l:"公众号「天一阁博物院」",d:"实名购票"},
+    {t:"ota",l:"OTA购票",d:"美团、携程可购票"}
+  ]},
+  {n:"衢州市开化根宫佛国文化旅游景区",c:"衢州",p:[
+    {t:"alipay",l:"衢州免费游",d:"支付宝小程序预约（选择根宫佛国）"}
+  ]},
+  {n:"丽水市缙云仙都景区",c:"丽水",p:[
+    {t:"wx",l:"缙云仙都旅游",d:"门票预约"}
+  ]},
+  {n:"温州市刘伯温故里景区",c:"温州",p:[
+    {t:"wx",l:"刘伯温故里5A景区",d:"微商城、门票预订"},
+    {t:"ota",l:"OTA购票",d:"美团、同程、携程可购票"}
+  ]},
+  {n:"台州府城文化旅游区",c:"台州",p:[
+    {t:"web",l:"公众号「台州府城」",d:"在线预订购票"}
+  ]},
+  {n:"丽水市云和梯田景区",c:"丽水",p:[
+    {t:"ota",l:"OTA平台购票",d:"暂未发现独立电商小程序，通过美团、携程购票"}
+  ]},
+  {n:"金华市双龙风景旅游区",c:"金华",p:[
+    {t:"wx",l:"智游双龙",d:"门票预订、买票立减"}
+  ]}
+];
+
+// ==== Toast ====
+var _toastTimer;
+function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(_toastTimer);_toastTimer=setTimeout(function(){t.classList.remove('show')},2500)}
+
+// ==== Clipboard ====
+function copy(t){if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(function(){toast('已复制：'+t)}).catch(function(){_fallback(t)})}else{_fallback(t)}}
+function _fallback(t){var e=document.createElement('textarea');e.value=t;e.style.position='fixed';e.style.opacity='0';document.body.appendChild(e);e.select();try{document.execCommand('copy');toast('已复制：'+t)}catch(e){toast('复制失败')}document.body.removeChild(e)}
+
+// ==== Modal ====
+var _modalKeyword='';
+function openModal(kw,desc,icon){
+  _modalKeyword=kw;
+  document.getElementById('modalKeyword').textContent=kw;
+  document.getElementById('modalDesc').textContent=desc||'已复制名称并尝试唤起微信。按以下步骤操作：';
+  document.getElementById('modalIcon').textContent=icon||'📱';
+  var cb=document.getElementById('copyBtn');
+  cb.textContent='📋 复制';cb.className='cpy-btn';
+  document.getElementById('modal').classList.add('show');
+}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal()});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal()});
+function copyKeyword(){copy(_modalKeyword);var b=document.getElementById('copyBtn');b.textContent='✓ 已复制';b.className='cpy-btn done'}
+
+// ==== Actions ====
+function isWeChatBrowser(){
+  var ua=navigator.userAgent.toLowerCase();
+  return ua.indexOf('micromessenger')!==-1;
+}
+
+function launchWxApp(name,link){
+  if(isWeChatBrowser()){
+    if(link){
+      if(link.indexOf('#小程序://')===0){
+        // Mini program link — copy and guide user to paste in WeChat chat
+        copy(link);
+        toast('已复制链接');
+        setTimeout(function(){openModal(link,'请将此链接发送到「文件传输助手」，点击即可打开小程序。','🚀')},400);
+      } else {
+        // Regular URL — open directly
+        window.location.href=link;
+      }
+      return;
+    } else {
+      // No link — copy name for search
+      copy(name);
+      toast('已复制名称，请在微信中搜索');
+      setTimeout(function(){openModal(name,'请在微信中搜索小程序名称后打开','🔍')},400);
+      return;
+    }
+  }
+  
+  // Outside WeChat — copy link + wake up WeChat
+  if(link){
+    copy(link);
+  } else {
+    copy(name);
+  }
+  
+  var a=document.createElement('a');
+  a.style.display='none';
+  a.href='weixin://';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  
+  if(link){
+    if(link.indexOf('#小程序://')===0){
+      setTimeout(function(){openModal(link,'已复制链接并唤起微信。请在微信中粘贴发送到「文件传输助手」，点击即可打开小程序。','🚀')},500);
+    } else {
+      toast('已复制链接');
+    }
+  } else {
+    setTimeout(function(){openModal(name,'已复制名称并唤起微信。在微信小程序面板中粘贴搜索即可打开。','📱')},500);
+  }
+}
+function launchAli(name){copy(name);setTimeout(function(){openModal(name,'已复制名称，请在支付宝中搜索该小程序：','💙')},300)}
+function openUrl(u){if(u)window.open(u,'_blank');else toast('暂无直接链接')}
+function launchOta(n){copy(n+' 门票');setTimeout(function(){openModal(n+' 门票','已复制搜索关键词。请前往美团/携程/同程搜索购票：','🎫')},300)}
+function showGuide(name,desc){openModal(name,desc)}
+
+// ==== Edit Mode ====
+var _editMode=false;
+function toggleEdit(){_editMode=!_editMode;document.body.classList.toggle('edit-mode',_editMode);document.getElementById('editToggle').textContent=_editMode?'✓ 完成编辑':'✎ 编辑直达链接'}
+function saveLink(si,pi){
+  var inp=document.getElementById('ai_'+si+'_'+pi);if(!inp)return;
+  var v=inp.value.trim();var m=loadMap();var k=si+'_'+pi;
+  if(v){m[k]=v;toast('链接已保存 ✓')}else{delete m[k];toast('链接已清空')}
+  saveMap(m);renderCards();
+
+// Detect WeChat browser and show banner
+if(typeof isWeChatBrowser==='function' && isWeChatBrowser()){
+  document.getElementById('wxBanner').style.display='block';
+}
+}
+function clearLink(si,pi){
+  var inp=document.getElementById('ai_'+si+'_'+pi);if(inp)inp.value='';
+  var m=loadMap();var k=si+'_'+pi;delete m[k];saveMap(m);
+  toast('链接已清除');renderCards();
+
+// Detect WeChat browser and show banner
+if(typeof isWeChatBrowser==='function' && isWeChatBrowser()){
+  
+}
+}
+function getLink(si,pi){return loadMap()[si+'_'+pi]||'';}
+
+// ==== Render ====
+function renderCards(){
+  var el=document.getElementById('cardList');
+  var userMap=loadMap();
+  var h='';
+  var wxCnt=0,dirCnt=0;
+
+  SPOTS.forEach(function(s,si){
+    var hasWx=false,canDir=false;
+    h+='<div class="card"><div class="card-header"><span class="name">'+(si+1)+'. '+s.n+'</span><span class="city">'+s.c+'</span></div><div class="card-body">';
+
+    s.p.forEach(function(p,pi){
+      var badge,bCls,bText,action;
+      var link=p.t==='wx'?(loadMap()[si+'_'+pi]||''):'';
+      var isDirect=!!link;
+
+      if(p.t==='wx'){
+        hasWx=true;
+        badge='微信小程序';
+        bCls=isDirect?'btn-primary':'btn-secondary';
+        bText=isDirect?'🚀 一键打开':'📱 在微信打开';
+        var escN=p.l.replace(/'/g,"\\'");
+        var escA=link.replace(/'/g,"\\'");
+        action="launchWxApp('"+escN+"','"+escA+"')";
+        if(isDirect)canDir=true;
+      }else if(p.t==='alipay'){
+        badge='支付宝小程序';
+        bCls='btn-ali';
+        bText='💙 在支付宝打开';
+        action="launchAli('"+p.l.replace(/'/g,"\\'")+"')";
+      }else if(p.t==='web'){
+        badge='公众号/网站';
+        bCls='btn-web';
+        if(p.u){
+          bText='🌐 打开链接';
+          action="openUrl('"+p.u.replace(/'/g,"\\'")+"')";
+        }else{
+          bText='🔍 查看指引';
+          action="showGuide('"+p.l.replace(/'/g,"\\'")+"','请在微信中搜索关注该公众号：')";
+        }
+      }else{
+        badge='OTA平台';
+        bCls='btn-ota';
+        bText='🎫 查看购票';
+        action="launchOta('"+s.n.replace(/'/g,"\\'")+"')";
+      }
+
+      var tagHtml=isDirect?'<span class="tag tag-ok">已配置链接</span>':'<span class="tag">需搜索</span>';
+
+      h+='<div class="platform">';
+      h+='<span class="badge badge-'+p.t+'">'+badge+'</span>';
+      h+='<div class="info">';
+      h+='<span class="name-label">「'+p.l+'」</span>'+tagHtml;
+      h+='<div class="desc">'+p.d+'</div>';
+      h+='<div class="actions">';
+      h+='<a class="btn '+bCls+'" href="javascript:;" onclick="'+action.replace(/"/g,'&quot;')+'">'+bText+'</a>';
+      if(p.t==='wx'||p.t==='alipay'){
+        h+='<a class="btn btn-ghost" href="javascript:;" onclick="copy(\''+p.l.replace(/'/g,"\\'")+'\')">📋 复制名称</a>';
+      }
+      h+='</div>';
+
+      // Direct link editor
+      h+='<div class="link-field">';
+      h+='<input type="text" id="ai_'+si+'_'+pi+'" placeholder="粘贴 #小程序:// 或 https:// 链接" value="'+(link||'')+'">';
+      h+='<button class="save-btn" onclick="saveLink('+si+','+pi+')">保存</button>';
+      if(link){h+='<button class="clear-btn" onclick="clearLink('+si+','+pi+')">✕ 清除</button>'}
+      h+='<span class="hint">'+(link?'✓ 已配置':'填入链接')+'</span>';
+      h+='</div>';
+
+      h+='</div></div>';
+    });
+
+    h+='</div></div>';
+    if(hasWx)wxCnt++;
+    if(canDir)dirCnt++;
+  });
+
+  el.innerHTML=h;
+  document.getElementById('totalCount').textContent=SPOTS.length;
+  document.getElementById('wxCount').textContent=wxCnt+'个';
+  document.getElementById('directCount').textContent=dirCnt+'个';
+}
+
+renderCards();
+
+// Detect WeChat browser and show banner
+if(typeof isWeChatBrowser==='function' && isWeChatBrowser()){
+  
+}
+</script>
+</body>
+</html>
